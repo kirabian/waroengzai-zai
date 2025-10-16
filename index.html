@@ -18,6 +18,7 @@
   --vanilla: #FFFDF9;
   --text-dark: #5E4B56;
   --accent: #E0A5C0;
+  --accent-strong: #c45b8a;
 }
 
 body {
@@ -96,7 +97,7 @@ input[type="number"] {
 
 .add-to-cart {
   margin-top: 1rem;
-  background: linear-gradient(135deg, var(--accent), #d68bb5);
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   border: none;
   padding: .8rem 1.2rem;
   color: white;
@@ -113,15 +114,19 @@ input[type="number"] {
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  background: linear-gradient(135deg, var(--accent), #d68bb5);
-  border: none;
+  background: linear-gradient(135deg, var(--accent-strong), var(--accent));
+  border: 2px solid white;
   color: white;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  font-size: 1.5rem;
+  width: 65px;
+  height: 65px;
+  font-size: 1.8rem;
   cursor: pointer;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transition: transform .2s;
+}
+.cart-btn:hover {
+  transform: scale(1.1);
 }
 .cart-count {
   position: absolute;
@@ -129,13 +134,14 @@ input[type="number"] {
   right: -5px;
   background: #ff6584;
   color: white;
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   font-size: .8rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 2px solid white;
 }
 
 /* === MODAL CART === */
@@ -143,10 +149,12 @@ input[type="number"] {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.8);
   backdrop-filter: blur(5px);
   z-index: 2000;
+  overflow-y: auto;
 }
+
 .modal-content {
   background: #fff;
   max-width: 500px;
@@ -154,7 +162,10 @@ input[type="number"] {
   padding: 2rem;
   border-radius: 20px;
   border: 1.5px solid #f5d6e0;
+  max-height: 85vh;
+  overflow-y: auto;
 }
+
 .close-btn {
   background: none;
   border: none;
@@ -188,7 +199,7 @@ input[type="number"] {
   height: 24px;
 }
 .payment-btn.selected, .payment-btn:hover {
-  background: linear-gradient(135deg, var(--accent), #d68bb5);
+  background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   color: #fff;
 }
 
@@ -248,7 +259,7 @@ footer {
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<button class="cart-btn" onclick="openCart()">🛒<span class="cart-count" id="cartCount">0</span></button>
+<button class="cart-btn" onclick="openCart()">🛍️<span class="cart-count" id="cartCount">0</span></button>
 
 <!-- CART MODAL -->
 <div class="modal" id="cartModal">
@@ -270,7 +281,7 @@ footer {
         <img src="https://upload.wikimedia.org/wikipedia/commons/9/94/QRIS_logo.svg" alt="QRIS">QRIS
       </button>
       <button class="payment-btn" onclick="selectPayment('ShopeePay', event)">
-        <img src="assets/logo-shopeepay.png"ShopeePay">ShopeePay
+        <img src="assets/logo-shopeepay.png" alt="ShopeePay">ShopeePay
       </button>
     </div>
 
@@ -355,7 +366,11 @@ function closeCart(){
 
 function renderCart(){
   const c=document.getElementById('cartItems');
-  if(cart.length===0){c.innerHTML='<p style="text-align:center;">Keranjang kosong 🥺</p>';document.getElementById('totalPrice').textContent='Total: Rp 0';return;}
+  if(cart.length===0){
+    c.innerHTML='<p style="text-align:center;">Keranjang kosong 🥺</p>';
+    document.getElementById('totalPrice').textContent='Total: Rp 0';
+    return;
+  }
   c.innerHTML=cart.map((i,idx)=>`
   <div style="display:flex;justify-content:space-between;align-items:center;margin:.5rem 0;">
     <div><strong>${i.name}</strong><br>${i.quantity}x Rp ${i.price.toLocaleString('id-ID')}</div>
