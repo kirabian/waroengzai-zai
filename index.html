@@ -1,161 +1,243 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Waroeng Zai Zai - Roleplay Shop</title>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<style>
-/* ===== GLOBAL STYLE ===== */
-* {margin:0;padding:0;box-sizing:border-box;}
-:root {--pink-soft:#FFE9F3;--white-soft:#FFFFFF;--vanilla:#FFFDF9;--text-dark:#5E4B56;--accent:#E0A5C0;--accent-strong:#c45b8a;}
-body {font-family:'Segoe UI',Tahoma,sans-serif;background:linear-gradient(135deg,var(--vanilla) 0%,var(--pink-soft) 60%,var(--white-soft)100%);color:var(--text-dark);min-height:100vh;overflow-x:hidden;}
-header{text-align:center;padding:2.5rem 1rem 2rem;background:rgba(255,255,255,0.8);border-bottom:2px solid var(--accent);backdrop-filter:blur(10px);}
-h1{font-size:2.3rem;font-weight:700;color:var(--text-dark);letter-spacing:2px;}
-.tagline{color:var(--accent);font-weight:500;margin-top:.3rem;}
-.container{max-width:1200px;margin:auto;padding:2rem 1rem;}
-.catalog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;}
-.catalog-item{background:#fff;border:1.5px solid #f5d6e0;border-radius:20px;padding:1.8rem;box-shadow:0 4px 15px rgba(0,0,0,0.05);transition:all .3s ease;}
-.catalog-item:hover{transform:translateY(-5px);box-shadow:0 8px 25px rgba(0,0,0,0.08);}
-.catalog-item h3{color:var(--accent);margin-bottom:.6rem;}
-.price{color:var(--text-dark);font-weight:600;}
-input[type="number"]{margin-top:.8rem;width:70px;text-align:center;border-radius:8px;border:1.5px solid #f5d6e0;padding:.4rem;}
-.add-to-cart{margin-top:1rem;background:linear-gradient(135deg,var(--accent),var(--accent-strong));border:none;padding:.8rem 1.2rem;color:white;border-radius:10px;cursor:pointer;transition:.3s;}
-.add-to-cart:hover{transform:scale(1.05);}
-.cart-btn{position:fixed;bottom:1.5rem;right:1.5rem;background:linear-gradient(135deg,var(--accent-strong),var(--accent));border:2px solid white;color:white;border-radius:50%;width:65px;height:65px;font-size:1.8rem;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,0.15);transition:transform .2s;z-index:999;}
-.cart-btn:hover{transform:scale(1.1);}
-.cart-count{position:absolute;top:-5px;right:-5px;background:#ff6584;color:white;width:24px;height:24px;border-radius:50%;font-size:.8rem;display:flex;justify-content:center;align-items:center;border:2px solid white;}
-.modal{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.8);backdrop-filter:blur(5px);z-index:2000;overflow-y:auto;}
-.modal.open{display:block;}
-.modal-content{background:#fff;max-width:500px;margin:3rem auto;padding:2rem;border-radius:20px;border:1.5px solid #f5d6e0;max-height:85vh;overflow-y:auto;}
-.close-btn{background:none;border:none;font-size:2rem;float:right;cursor:pointer;color:var(--accent);}
-.payment-methods{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;margin-top:1rem;}
-.payment-btn{background:#fff;border:1.5px solid #f5d6e0;border-radius:12px;padding:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:.3s;}
-.payment-btn img{width:36px;height:36px;}
-.payment-btn.selected,.payment-btn:hover{background:linear-gradient(135deg,var(--accent),var(--accent-strong));color:#fff;}
-.testimoni-section{background:#fff;padding:2rem 1rem;border-top:1px solid #f5d6e0;}
-.testimoni-section h2{text-align:center;color:var(--accent);margin-bottom:1.5rem;}
-.testimoni-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;}
-.testimoni{background:#fff8fb;border:1px solid #f5d6e0;border-radius:15px;padding:1rem;font-size:.95rem;box-shadow:0 3px 10px rgba(0,0,0,0.05);}
-.testimoni strong{color:var(--accent);}
-footer{background:var(--white-soft);text-align:center;padding:1.5rem;font-size:.9rem;color:#777;border-top:1px solid #f5d6e0;}
-@media(max-width:600px){h1{font-size:1.9rem;}.modal-content{margin:1.5rem;}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waroeng Zai Zai - Roleplay Shop</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        /* ===== GLOBAL STYLE ===== */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --pink-soft: #FFE9F3;
+            --white-soft: #FFFFFF;
+            --vanilla: #FFFDF9;
+            --text-dark: #5E4B56;
+            --accent: #E0A5C0;
+            --accent-strong: #c45b8a;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(135deg, var(--vanilla) 0%, var(--pink-soft) 60%, var(--white-soft)100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        header { text-align:center; padding:2.5rem 1rem 2rem; background: rgba(255,255,255,0.8); border-bottom:2px solid var(--accent); backdrop-filter: blur(10px);}
+        h1 { font-size:2.3rem; font-weight:700; color:var(--text-dark); letter-spacing:2px;}
+        .tagline { color:var(--accent); font-weight:500; margin-top:.3rem;}
+        .container { max-width:1200px; margin:auto; padding:2rem 1rem;}
+        .catalog-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap:1.5rem;}
+        .catalog-item { background:#fff; border:1.5px solid #f5d6e0; border-radius:20px; padding:1.8rem; box-shadow:0 4px 15px rgba(0,0,0,0.05); transition: all .3s ease;}
+        .catalog-item:hover { transform: translateY(-5px); box-shadow:0 8px 25px rgba(0,0,0,0.08);}
+        .catalog-item h3 { color: var(--accent); margin-bottom:.6rem;}
+        .price { color: var(--text-dark); font-weight:600;}
+        input[type="number"] { margin-top:.8rem; width:70px; text-align:center; border-radius:8px; border:1.5px solid #f5d6e0; padding:.4rem;}
+        .add-to-cart { margin-top:1rem; background: linear-gradient(135deg,var(--accent),var(--accent-strong)); border:none; padding:.8rem 1.2rem; color:white; border-radius:10px; cursor:pointer; transition:.3s;}
+        .add-to-cart:hover { transform: scale(1.05);}
+        .cart-btn { position:fixed; bottom:1.5rem; right:1.5rem; background:linear-gradient(135deg,var(--accent-strong),var(--accent)); border:2px solid white; color:white; border-radius:50%; width:65px; height:65px; font-size:1.8rem; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,0.15); transition: transform .2s; z-index:999;}
+        .cart-btn:hover { transform: scale(1.1);}
+        .cart-count { position:absolute; top:-5px; right:-5px; background:#ff6584; color:white; width:24px; height:24px; border-radius:50%; font-size:.8rem; display:flex; justify-content:center; align-items:center; border:2px solid white;}
+        .modal { display:none; position:fixed; inset:0; background: rgba(255,255,255,0.8); backdrop-filter:blur(5px); z-index:2000; overflow-y:auto;}
+        .modal.open { display:block;}
+        .modal-content { background:#fff; max-width:500px; margin:3rem auto; padding:2rem; border-radius:20px; border:1.5px solid #f5d6e0; max-height:85vh; overflow-y:auto;}
+        .close-btn { background:none; border:none; font-size:2rem; float:right; cursor:pointer; color:var(--accent);}
+        .payment-methods { display:grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:1rem; margin-top:1rem;}
+        .payment-btn { background:#fff; border:1.5px solid #f5d6e0; border-radius:12px; padding:.7rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; transition:.3s;}
+        .payment-btn img { width:36px; height:36px;}
+        .payment-btn.selected, .payment-btn:hover { background: linear-gradient(135deg,var(--accent),var(--accent-strong)); color:#fff;}
+        footer { background:var(--white-soft); text-align:center; padding:1.5rem; font-size:.9rem; color:#777; border-top:1px solid #f5d6e0;}
+        @media(max-width:600px){ h1{ font-size:1.9rem;} .modal-content{ margin:1.5rem; } }
+
+        /* ===== STYLE TESTIMONI BARU ===== */
+        .testimoni-section { padding:2rem 1rem; }
+        .testimoni-section h2 { text-align:center; color:var(--accent); margin-bottom:1.5rem; }
+        .testimoni-section input, .testimoni-section textarea { padding:.5rem; border-radius:8px; border:1px solid #f5d6e0; margin-bottom:.5rem; width:100%; }
+        .testimoni-section button { padding:.5rem 1rem; background:var(--accent); color:white; border:none; border-radius:8px; cursor:pointer; margin-right:.5rem; }
+        .testimoni-grid { margin-top:2rem; }
+        .testimoni { background:#fff8fb; border:1px solid #f5d6e0; border-radius:12px; padding:.8rem; margin-bottom:.5rem; }
+        .testimoni strong { color:var(--accent); }
+    </style>
 </head>
+
 <body>
 
 <header>
-<h1>🌸 Waroeng Zai Zai 🌸</h1>
-<p class="tagline">your fav roleplay shop ✨💕</p>
+    <h1>🌸 Waroeng Zai Zai 🌸</h1>
+    <p class="tagline">your fav roleplay shop ✨💕</p>
 </header>
 
 <div class="container">
-<div class="catalog-grid" id="catalogGrid"></div>
+    <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
 <button class="cart-btn" onclick="openCart()">🛍️<span class="cart-count" id="cartCount">0</span></button>
 
 <div class="modal" id="cartModal" onclick="clickOutside(event)">
-  <div class="modal-content" id="cartBox">
-    <button class="close-btn" onclick="closeCart()">&times;</button>
-    <h2>Keranjang Belanja 💕</h2>
-    <div id="cartItems"></div>
-    <div class="total" id="totalPrice" style="text-align:right;margin:1rem 0;">Total: Rp 0</div>
+    <div class="modal-content" id="cartBox">
+        <button class="close-btn" onclick="closeCart()">&times;</button>
+        <h2>Keranjang Belanja 💕</h2>
+        <div id="cartItems"></div>
+        <div class="total" id="totalPrice" style="text-align:right;margin:1rem 0;">Total: Rp 0</div>
 
-    <h3>Pilih Pembayaran:</h3>
-    <div class="payment-methods">
-      <button class="payment-btn" onclick="selectPayment('GoPay',event)"><img src="assets/logo-gopay.png" alt="GoPay">GoPay</button>
-      <button class="payment-btn" onclick="selectPayment('DANA',event)"><img src="assets/logo-dana.png" alt="DANA">DANA</button>
-      <button class="payment-btn" onclick="selectPayment('QRIS',event)"><img src="https://upload.wikimedia.org/wikipedia/commons/9/94/QRIS_logo.svg" alt="QRIS">QRIS</button>
-      <button class="payment-btn" onclick="selectPayment('ShopeePay',event)"><img src="assets/logo-shopeepay.png" alt="ShopeePay">ShopeePay</button>
+        <h3>Pilih Pembayaran:</h3>
+        <div class="payment-methods">
+            <button class="payment-btn" onclick="selectPayment('GoPay',event)"><img src="assets/logo-gopay.png" alt="GoPay">GoPay</button>
+            <button class="payment-btn" onclick="selectPayment('DANA',event)"><img src="assets/logo-dana.png" alt="DANA">DANA</button>
+            <button class="payment-btn" onclick="selectPayment('QRIS',event)"><img src="https://upload.wikimedia.org/wikipedia/commons/9/94/QRIS_logo.svg" alt="QRIS">QRIS</button>
+            <button class="payment-btn" onclick="selectPayment('ShopeePay',event)"><img src="assets/logo-shopeepay.png" alt="ShopeePay">ShopeePay</button>
+        </div>
+
+        <button class="add-to-cart" id="checkoutBtn" onclick="checkout()" disabled>Checkout ke Telegram 💌</button>
     </div>
-
-    <button class="add-to-cart" id="checkoutBtn" onclick="checkout()" disabled>Checkout ke Telegram 💌</button>
-  </div>
 </div>
 
 <section class="testimoni-section">
-<h2>Testimoni Pelanggan 💬</h2>
+    <h2>Testimoni Pelanggan 💬</h2>
 
-<div style="text-align:center;margin-bottom:1rem;">
-  <input type="text" id="testiNama" placeholder="Nama" style="padding:.5rem;border-radius:8px;border:1px solid #f5d6e0;margin-bottom:.5rem;">
-  <input type="text" id="testiPesan" placeholder="Pesan testimoni" style="padding:.5rem;border-radius:8px;border:1px solid #f5d6e0;margin-bottom:.5rem;width:70%;">
-  <br>
-  <button class="add-to-cart" onclick="addTestimoni()">Kirim Testimoni</button>
-  <button class="add-to-cart" onclick="downloadExcel()">Download Excel</button>
-</div>
+    <div>
+        <input type="text" id="nama" placeholder="Nama">
+        <textarea id="pesan" placeholder="Pesan testimoni"></textarea>
+        <button onclick="kirimTestimoni()">Kirim</button>
+        <button onclick="downloadExcel()">Download Excel</button>
+    </div>
 
-<div class="testimoni-grid" id="testimoniGrid"></div>
+    <div class="testimoni-grid" id="testimoniGrid"></div>
 </section>
 
 <footer>
-🌸 Waroeng Zai Zai © 2025 | Dibuat dengan cinta 💕 oleh tim Fabian Solutions
+    🌸 Waroeng Zai Zai © 2025 | Dibuat dengan cinta 💕 oleh tim Fabian Solutions
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-const catalog = [
-  { name:'Manips',price:4500,id:1 },
-  { name:'Manips Deco',price:5500,id:2 },
-  { name:'Moodboard Basic',price:600,unit:'/slide',id:3 },
-  { name:'Moodboard Semi Deco',price:800,unit:'/slide',id:4 },
-  { name:'Moodboard Deco',price:2500,unit:'/slide',id:5 },
-  { name:'Moodboard Design',price:3500,unit:'/slide',id:6 },
-  { name:'Loveboard',price:3000,unit:'/slide',id:7 },
-  { name:'Icons',price:2500,id:8 },
-  { name:'Scribble',price:2500,range:'1.5k-3.5k',id:9 },
-  { name:'Kissedby',price:1500,unit:'/slide',id:10 },
-  { name:'Yearbook',price:800,unit:'/orang',id:11 },
-  { name:'Wording',price:8000,range:'1k-15k',id:12 }
-];
+    // ===== CATALOG & CART =====
+    const catalog = [
+        { name: 'Manips', price: 4500, id: 1 },
+        { name: 'Manips Deco', price: 5500, id: 2 },
+        { name: 'Moodboard Basic', price: 600, unit: '/slide', id: 3 },
+        { name: 'Moodboard Semi Deco', price: 800, unit: '/slide', id: 4 },
+        { name: 'Moodboard Deco', price: 2500, unit: '/slide', id: 5 },
+        { name: 'Moodboard Design', price: 3500, unit: '/slide', id: 6 },
+        { name: 'Loveboard', price: 3000, unit: '/slide', id: 7 },
+        { name: 'Icons', price: 2500, id: 8 },
+        { name: 'Scribble', price: 2500, range: '1.5k-3.5k', id: 9 },
+        { name: 'Kissedby', price: 1500, unit: '/slide', id: 10 },
+        { name: 'Yearbook', price: 800, unit: '/orang', id: 11 },
+        { name: 'Wording', price: 8000, range: '1k-15k', id: 12 }
+    ];
 
-let cart=[];let selectedPayment=''; 
-let testimoniData = JSON.parse(localStorage.getItem('testimoniData')) || [
-  {nama:'melpop',pesan:'Adminnya ramah banget, hasilnya cakep parah 😍'},
-  {nama:'hazelnotes',pesan:'Moodboard-nya estetik banget, worth it tiap slide!'}
-];
+    let cart = [];
+    let selectedPayment = '';
 
-function renderCatalog(){const grid=document.getElementById('catalogGrid');grid.innerHTML=catalog.map(item=>`
-  <div class="catalog-item">
-    <h3>${item.name}</h3>
-    <p class="price">${item.range?item.range:'Rp '+item.price.toLocaleString('id-ID')}${item.unit||''}</p>
-    <input type="number" min="1" value="1" id="qty-${item.id}">
-    <button class="add-to-cart" onclick="addToCart(${item.id},event)">Tambah ke Keranjang 🛍️</button>
-  </div>
-`).join('');}
+    function renderCatalog() {
+        const grid = document.getElementById('catalogGrid');
+        grid.innerHTML = catalog.map(item => `
+            <div class="catalog-item">
+                <h3>${item.name}</h3>
+                <p class="price">${item.range ? item.range : 'Rp ' + item.price.toLocaleString('id-ID')}${item.unit || ''}</p>
+                <input type="number" min="1" value="1" id="qty-${item.id}">
+                <button class="add-to-cart" onclick="addToCart(${item.id},event)">Tambah ke Keranjang 🛍️</button>
+            </div>
+        `).join('');
+    }
 
-function addToCart(id,e){const item=catalog.find(i=>i.id===id);const qty=parseInt(document.getElementById(`qty-${id}`).value)||1;const exist=cart.find(i=>i.id===id);if(exist)exist.quantity+=qty;else cart.push({...item,quantity:qty});updateCartCount();e.target.textContent='✓ Ditambahkan!';setTimeout(()=>e.target.textContent='Tambah ke Keranjang 🛍️',800);}
-function updateCartCount(){document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.quantity,0);}
-function openCart(){renderCart();document.getElementById('cartModal').classList.add('open');document.body.style.overflow='hidden';}
-function closeCart(){document.getElementById('cartModal').classList.remove('open');document.body.style.overflow='';}
-function clickOutside(e){if(e.target.id==='cartModal'){closeCart();}}
-function renderCart(){const c=document.getElementById('cartItems');if(cart.length===0){c.innerHTML='<p style="text-align:center;">Keranjang kosong 🥺</p>';document.getElementById('totalPrice').textContent='Total: Rp 0';return;}c.innerHTML=cart.map((i,idx)=>`<div style="display:flex;justify-content:space-between;align-items:center;margin:.5rem 0;"><div><strong>${i.name}</strong><br>${i.quantity}x Rp ${i.price.toLocaleString('id-ID')}</div><button onclick="removeFromCart(${idx})" style="background:#ff99b9;border:none;color:white;padding:.4rem .8rem;border-radius:8px;">Hapus</button></div>`).join('');const total=cart.reduce((s,i)=>s+i.price*i.quantity,0);document.getElementById('totalPrice').textContent=`Total: Rp ${total.toLocaleString('id-ID')}`;}
-function removeFromCart(i){cart.splice(i,1);updateCartCount();renderCart();}
-function selectPayment(method,e){selectedPayment=method;document.querySelectorAll('.payment-btn').forEach(b=>b.classList.remove('selected'));e.currentTarget.classList.add('selected');document.getElementById('checkoutBtn').disabled=false;}
-function checkout(){if(cart.length===0)return alert('Keranjang kosong!');const total=cart.reduce((s,i)=>s+i.price*i.quantity,0);const list=cart.map(i=>`${i.name} (${i.quantity}x) - Rp ${(i.price*i.quantity).toLocaleString('id-ID')}`).join('%0A');const msg=`Halo kak! 🌸 Mau order:%0A%0A${list}%0A%0ATotal: Rp ${total.toLocaleString('id-ID')}%0APembayaran: ${selectedPayment}`;window.open(`https://t.me/kimhwaerin?text=${msg}`,'_blank');cart=[];updateCartCount();closeCart();}
+    function addToCart(id, e) {
+        const item = catalog.find(i => i.id === id);
+        const qty = parseInt(document.getElementById(`qty-${id}`).value) || 1;
+        const exist = cart.find(i => i.id === id);
+        if (exist) exist.quantity += qty;
+        else cart.push({ ...item, quantity: qty });
+        updateCartCount();
+        e.target.textContent = '✓ Ditambahkan!';
+        setTimeout(() => e.target.textContent = 'Tambah ke Keranjang 🛍️', 800);
+    }
 
-/* === TESTIMONI DENGAN LOCALSTORAGE & EXCEL === */
-function renderTestimoni(){const grid=document.getElementById('testimoniGrid');grid.innerHTML=testimoniData.map(t=>`<div class="testimoni">"${t.pesan}" <br><strong>- ${t.nama}</strong></div>`).join('');}
+    function updateCartCount() {
+        document.getElementById('cartCount').textContent = cart.reduce((s, i) => s + i.quantity, 0);
+    }
 
-function addTestimoni(){
-  const nama=document.getElementById('testiNama').value.trim();
-  const pesan=document.getElementById('testiPesan').value.trim();
-  if(!nama||!pesan)return alert('Isi nama dan pesan testimoni!');
-  testimoniData.push({nama,pesan});
-  localStorage.setItem('testimoniData', JSON.stringify(testimoniData));
-  renderTestimoni();
-  document.getElementById('testiNama').value='';document.getElementById('testiPesan').value='';
-  alert('Testimoni berhasil ditambahkan 🌸');
-}
+    function openCart() { renderCart(); document.getElementById('cartModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeCart() { document.getElementById('cartModal').classList.remove('open'); document.body.style.overflow = ''; }
+    function clickOutside(e) { if(e.target.id==='cartModal'){closeCart();} }
 
-function downloadExcel(){
-  const ws=XLSX.utils.json_to_sheet(testimoniData);
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Testimoni');
-  XLSX.writeFile(wb,'testimoni.xlsx');
-}
+    function renderCart() {
+        const c = document.getElementById('cartItems');
+        if(cart.length===0){ 
+            c.innerHTML='<p style="text-align:center;">Keranjang kosong 🥺</p>'; 
+            document.getElementById('totalPrice').textContent='Total: Rp 0'; 
+            return;
+        }
+        c.innerHTML = cart.map((i, idx)=>`
+            <div style="display:flex;justify-content:space-between;align-items:center;margin:.5rem 0;">
+                <div><strong>${i.name}</strong><br>${i.quantity}x Rp ${i.price.toLocaleString('id-ID')}</div>
+                <button onclick="removeFromCart(${idx})" style="background:#ff99b9;border:none;color:white;padding:.4rem .8rem;border-radius:8px;">Hapus</button>
+            </div>
+        `).join('');
+        const total = cart.reduce((s,i)=>s+i.price*i.quantity,0);
+        document.getElementById('totalPrice').textContent = `Total: Rp ${total.toLocaleString('id-ID')}`;
+    }
 
-renderCatalog();
-renderTestimoni();
+    function removeFromCart(i) { cart.splice(i,1); updateCartCount(); renderCart(); }
+
+    function selectPayment(method,e){
+        selectedPayment = method;
+        document.querySelectorAll('.payment-btn').forEach(b=>b.classList.remove('selected'));
+        e.currentTarget.classList.add('selected');
+        document.getElementById('checkoutBtn').disabled=false;
+    }
+
+    function checkout(){
+        if(cart.length===0) return alert('Keranjang kosong!');
+        const total = cart.reduce((s,i)=>s+i.price*i.quantity,0);
+        const list = cart.map(i=>`${i.name} (${i.quantity}x) - Rp ${(i.price*i.quantity).toLocaleString('id-ID')}`).join('%0A');
+        const msg = `Halo kak! 🌸 Mau order:%0A%0A${list}%0A%0ATotal: Rp ${total.toLocaleString('id-ID')}%0APembayaran: ${selectedPayment}`;
+        window.open(`https://t.me/kimhwaerin?text=${msg}`,'_blank');
+        cart=[]; updateCartCount(); closeCart();
+    }
+
+    renderCatalog();
+
+    // ===== TESTIMONI BARU =====
+    const API_URL = 'https://script.google.com/macros/s/AKfycbz1LJzAnrwoyMgm5uO3kIEC8SVjEm5EzMbsikdVDHh1SnOmUPIq8F9w4rbjTWzvPdw/exec'; // ganti dengan Web App URL Google Script
+
+    async function fetchTestimoni(){
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      renderTestimoni(data);
+      return data;
+    }
+
+    function renderTestimoni(data){
+      const grid = document.getElementById('testimoniGrid');
+      grid.innerHTML = data.map(t=>`<div class="testimoni">"${t.pesan}"<br><strong>- ${t.nama}</strong></div>`).join('');
+    }
+
+    async function kirimTestimoni(){
+      const nama = document.getElementById('nama').value.trim();
+      const pesan = document.getElementById('pesan').value.trim();
+      if(!nama||!pesan)return alert('Isi nama dan pesan!');
+      await fetch(API_URL, {
+        method:'POST',
+        body: JSON.stringify({nama,pesan}),
+      });
+      document.getElementById('nama').value='';
+      document.getElementById('pesan').value='';
+      fetchTestimoni();
+      alert('Testimoni berhasil dikirim 🌸');
+    }
+
+    async function downloadExcel(){
+      const data = await fetchTestimoni();
+      const ws=XLSX.utils.json_to_sheet(data);
+      const wb=XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb,ws,'Testimoni');
+      XLSX.writeFile(wb,'testimoni.xlsx');
+    }
+
+    // Load testimoni saat pertama kali
+    fetchTestimoni();
 </script>
 
 </body>
